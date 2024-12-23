@@ -1,0 +1,38 @@
+services:
+  server:
+    build: .
+    image: ubuntu-os
+    working_dir: /usr/local/src
+    networks:
+      - os
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/local/src
+    command: bash -c "make clean && make && cd target && /bin/bash"
+
+  client:
+    build: .
+    image: ubuntu-os
+    working_dir: /usr/local/src
+    networks:
+      - os
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/local/src
+    command: bash -c "make clean && make && cd target && /bin/bash"
+
+  remoteclient:
+    build: .
+    image: ubuntu-os
+    working_dir: /usr/local/src
+    network_mode: host
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/local/src
+    command: bash -c "make clean && make target/client && cd target && /bin/bash"
+
+networks:
+  os:
